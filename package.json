@@ -1,0 +1,23 @@
+{
+  "name": "ecomrece_app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "prod": "nodemon app.js"
+  },
+  "keywords": [],
+  "author": "hbrehman",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
+    "mongoose": "^5.9.3",
+    "underscore": "^1.9.2",
+    "validator": "^12.2.0"
+  }
+}
