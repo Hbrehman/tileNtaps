@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema({
   name: {
@@ -38,11 +39,28 @@ const userSchema = new mongoose.Schema({
     select: false,
     enum: ["admin", "manager", "user"],
     default: "user"
-  }
+  },
+  passwordChangedAt: Date
 });
 
-userSchema.methods.getAuthenticationToken = function() {
-  // return
+userSchema.pre("save", async function() {
+  if (this.isModified("password")) {
+    this.password = await bcrypt.hash(this.password, 12);
+  }
+  this.passwordChangedAt = Date.now() + 1000;
+  this.passwordConfirm = undefined;
+});
+
+userSchema.methods.comparePassword = async function(
+  candidatePassword,
+  userPassword
+) {
+  return await bcrypt.compare(candidatePassword, userPassword);
+};
+
+userSchema.methods.changedPasswordAfter = function(tokenIssueTime) {
+  console.log(tokenIssueTime, this.passwordChangedAt);
+  return new Date(Date.now() + tokenIssueTime) > this.passwordChangedAt;
 };
 
 const User = mongoose.model("user", userSchema);

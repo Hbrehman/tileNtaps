@@ -4,8 +4,8 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "nodemon app.js",
-    "prod": "nodemon app.js"
+    "start": "nodemon server.js",
+    "prod": "nodemon server.js"
   },
   "keywords": [],
   "author": "hbrehman",
