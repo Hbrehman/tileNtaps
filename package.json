@@ -17,6 +17,7 @@
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.15",
     "mongoose": "^5.9.3",
+    "nodemailer": "^6.4.4",
     "underscore": "^1.9.2",
     "validator": "^12.2.0"
   }
