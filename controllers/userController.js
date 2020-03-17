@@ -31,8 +31,6 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     );
   }
 
-  console.log(req.user);
-
   const updatedUser = await User.findByIdAndUpdate(
     req.user._id,
     _.pick(req.body, ["name", "email"]),
@@ -45,5 +43,15 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     data: updatedUser
+  });
+});
+
+exports.deleteMe = catchAsync(async (req, res, next) => {
+  await User.findByIdAndUpdate(req.user.id, {
+    active: false
+  });
+  res.status(204).json({
+    status: "success",
+    data: null
   });
 });

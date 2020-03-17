@@ -14,9 +14,22 @@ router.post(
   authController.updatePassword
 );
 
+router.patch(
+  "/updateMe",
+  authController.protect,
+  authController.protect,
+  userController.updateMe
+);
+router.delete(
+  "/deleteMe",
+  authController.protect,
+  authController.protect,
+  userController.deleteMe
+);
+
+router.get("/getAllUsers", userController.getAllUsers);
+
 router.post("/createRegUser", userController.createUser);
-router.get("/getAllUsers", authController.protect, userController.getAllUsers);
-router.get("/updateMe", authController.protect, userController.updateMe);
 router.post("/createAdminUser", userController.createUser);
 
 module.exports = router;
