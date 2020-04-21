@@ -1,8 +1,23 @@
 const express = require("express");
 const router = express.Router();
 
-const userController = require("./../controllers/userController");
-const authController = require("./../controllers/authController");
+const userController = require("../controllers/userController");
+const authController = require("../controllers/authController");
+
+router
+  .route("/")
+  .get(
+    authController.protect,
+    authController.restrictTo("admin"),
+    userController.getAllUsers
+  )
+  .post(
+    authController.protect,
+    authController.restrictTo("admin"),
+    userController.createUser
+  );
+
+router.get("/:id", userController.getOneUsers);
 
 router.post("/signup", authController.SignUp);
 router.post("/login", authController.logIn);
@@ -26,10 +41,5 @@ router.delete(
   authController.protect,
   userController.deleteMe
 );
-
-router.get("/getAllUsers", userController.getAllUsers);
-
-router.post("/createRegUser", userController.createUser);
-router.post("/createAdminUser", userController.createUser);
 
 module.exports = router;

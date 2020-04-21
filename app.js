@@ -7,8 +7,12 @@ const mongoSanitize = require("express-mongo-sanitize");
 const app = express();
 const globalErrorHandler = require("./controllers/errorController");
 const AppError = require("./utils/appError");
+const compression = require("compression");
 
-const users = require("./routes/userRouter");
+// const users = require("./routes/userRouter");
+const userRouter = require("./routes/userRoutes");
+const productRouter = require("./routes/productRoutes");
+const orderRouter = require("./routes/orderRoutes");
 
 // Set security HTTP Headers
 app.use(helmet());
@@ -33,7 +37,11 @@ if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-app.use("/api/v1/users", users);
+app.use(compression());
+
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/products", productRouter);
+app.use("/api/v1/orders", orderRouter);
 
 app.all("*", (req, res, next) => {
   next(

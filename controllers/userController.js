@@ -3,11 +3,13 @@ const User = require("../models/userModel");
 const catchAsync = require("./../utils/catchAsync");
 
 exports.createUser = async (req, res, next) => {
-  const user = await User.create(req.body); // not a good practice
+  const user = await User.create(
+    _.pick(req.body, ["name", "email", "photo", "password", "passwordConfirm"])
+  );
   res.status(201).json({
     status: "success",
     message: "User created successfully...",
-    data: user
+    data: user,
   });
 };
 
@@ -17,7 +19,18 @@ exports.getAllUsers = async (req, res, next) => {
   res.status(200).json({
     status: "success",
     results: users.length,
-    data: users
+    data: users,
+  });
+};
+
+exports.getOneUsers = async (req, res, next) => {
+  const user = await User.findById(req.params.id);
+
+  if (!user) return new AppError("There is no user with given id.", 404);
+
+  res.status(200).json({
+    status: "success",
+    data: user,
   });
 };
 
@@ -36,22 +49,22 @@ exports.updateMe = catchAsync(async (req, res, next) => {
     _.pick(req.body, ["name", "email"]),
     {
       new: true,
-      runValidators: true
+      runValidators: true,
     }
   );
 
   res.status(200).json({
     status: "success",
-    data: updatedUser
+    data: updatedUser,
   });
 });
 
 exports.deleteMe = catchAsync(async (req, res, next) => {
   await User.findByIdAndUpdate(req.user.id, {
-    active: false
+    active: false,
   });
   res.status(204).json({
     status: "success",
-    data: null
+    data: null,
   });
 });
