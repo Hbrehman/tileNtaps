@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const _ = require("underscore");
 const AppError = require("./../utils/appError");
 
-const signToken = id => {
+const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET_KEY);
 };
 
@@ -21,7 +21,7 @@ const createSendToken = (user, statusCode, res) => {
       Date.now + process.env.JWT_COOKIE_EXPIRES_IN * 90 * 24 * 60 * 60 * 1000
     ),
     // secure: true, // because of this option set to true, the communication will only happen on https connection on http communication will not happen
-    httpOnly: true // we set it true because the cookie can newer be accessed and modified by the browser anyway. it prevents xss attcks
+    httpOnly: true, // we set it true because the cookie can newer be accessed and modified by the browser anyway. it prevents xss attcks
   };
   if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
   res.cookie("jwt", token, cookieOptions);
@@ -32,8 +32,8 @@ const createSendToken = (user, statusCode, res) => {
     status: "success",
     token,
     data: {
-      user
-    }
+      user,
+    },
   });
 };
 
@@ -106,6 +106,7 @@ module.exports.protect = catchAsync(async (req, res, next) => {
 
 module.exports.forgotPassword = catchAsync(async (req, res, next) => {
   const { email } = req.body;
+  console.log(req.body);
 
   const user = await User.findOne({ email });
 
@@ -125,7 +126,7 @@ module.exports.forgotPassword = catchAsync(async (req, res, next) => {
     await sendMail({
       email: user.email,
       subject: "Your password reset token (valid for 10 minutes)",
-      message
+      message,
     });
   } catch (ex) {
     user.passwordResetToken = undefined;
@@ -138,7 +139,7 @@ module.exports.forgotPassword = catchAsync(async (req, res, next) => {
 
   res.status(200).json({
     status: "success",
-    message: "Token sent to email!"
+    message: "Token sent to email!",
   });
 });
 
@@ -151,7 +152,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
   const user = await User.findOne({
     passwordResetToken: hashedToken,
-    passwordResetTokenExpire: { $gt: Date.now() }
+    passwordResetTokenExpire: { $gt: Date.now() },
   });
 
   if (!user) {
