@@ -1,6 +1,6 @@
 const crypto = require("crypto");
-const sendMail = require("./../utils/email");
 const { promisify } = require("util");
+const Email = require("./../utils/email");
 const User = require("./../models/userModel");
 const catchAsync = require("./../utils/catchAsync");
 const jwt = require("jsonwebtoken");
@@ -8,7 +8,7 @@ const _ = require("underscore");
 const AppError = require("./../utils/appError");
 
 const signToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET_KEY);
+  return jwt.sign({ id }, process.env.JWT_SECRET_KEY, { expiresIn: "24h" });
 };
 
 //, {expiresIn: process.env.JWT_EXPIRES_IN}
@@ -26,15 +26,22 @@ const createSendToken = (user, statusCode, res) => {
   if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
   res.cookie("jwt", token, cookieOptions);
 
-  user.password = undefined;
+  const userInJSON = JSON.stringify(user);
+  res.cookie("user", user._id, { httpOnly: false });
 
-  res.status(statusCode).json({
-    status: "success",
-    token,
-    data: {
-      user,
-    },
+  user.password = undefined;
+  // res.status(statusCode).json({
+  //   status: "success",
+  //   token,
+  //   data: {
+  //     user,
+  //   },
+  // });
+
+  res.writeHead(301, {
+    Location: "http://127.0.0.1:5501/dist/index.html",
   });
+  res.end();
 };
 
 module.exports.SignUp = catchAsync(async (req, res, next) => {
@@ -42,17 +49,68 @@ module.exports.SignUp = catchAsync(async (req, res, next) => {
     _.pick(req.body, ["name", "email", "password", "passwordConfirm"])
   );
 
-  createSendToken(user, 201, res);
+  const jwt = signToken(user._id);
+
+  user.verificationToken = jwt;
+
+  await user.save({ validateBeforeSave: false });
+
+  const url = `${req.protocol}://${req.get(
+    "host"
+  )}/api/v1/users/verifySignUp/${jwt}`;
+
+  try {
+    await new Email(user, url).sendVerification();
+  } catch (ex) {
+    console.log(ex);
+    user.verificationToken = undefined;
+    await user.save({ validateBeforeSave: false });
+    new AppError("There was an error sending the Email! Try again later", 500);
+  }
+
+  res.status(200).json({
+    status: "success",
+  });
 });
+
+module.exports.redirectAfterVerification = catchAsync(
+  async (req, res, next) => {
+    const token = req.params.token;
+    let user = await User.findOne({
+      verificationToken: token,
+    });
+
+    try {
+      // 1) varification token
+      const decoded = await promisify(jwt.verify)(
+        token,
+        process.env.JWT_SECRET_KEY
+      );
+      if (!decoded || !user) {
+        return next(new AppError("Token is invalid or has expired.", 400));
+      }
+    } catch (ex) {
+      console.log(ex);
+      return next(new AppError("Token is invalid or has expired.", 400));
+    }
+
+    user.isVerified = true;
+    user = await user.save({ validateBeforeSave: false });
+    const currentUser = await User.findById({ _id: user._id }).select(
+      "-verificationToken"
+    );
+    createSendToken(currentUser, 201, res);
+  }
+);
 
 module.exports.logIn = catchAsync(async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password)
-    return next(new AppError("Please provide Email and Password."));
+    return next(new AppError("Please provide Email and Password.", 400));
   const user = await User.findOne({ email }).select("+password");
 
   if (!user || !(await user.comparePassword(password, user.password))) {
-    return next(new AppError("Invalid Email or Password."));
+    return next(new AppError("Invalid Email or Password.", 400));
   }
 
   //   user = user.select("-password");
@@ -69,6 +127,8 @@ module.exports.protect = catchAsync(async (req, res, next) => {
     req.headers.authorization.startsWith("Bearer")
   ) {
     token = req.headers.authorization.split(" ")[1];
+  } else if (req.cookies.jwt) {
+    token = req.cookies.jwt;
   }
   if (!token) {
     return next(
@@ -84,7 +144,9 @@ module.exports.protect = catchAsync(async (req, res, next) => {
 
   //   3) check if user still exists
 
-  const currentUser = await User.findById(decoded.id);
+  const currentUser = await User.findById(decoded.id).select(
+    "-passwordResetToken -passwordResetTokenExpire -__v"
+  );
   if (!currentUser)
     return next(
       new AppError("User belonging to this token does not exist!", 401)
@@ -100,7 +162,7 @@ module.exports.protect = catchAsync(async (req, res, next) => {
     );
   }
 
-  req.user = currentUser;
+  res.user = currentUser;
   next();
 });
 
@@ -116,24 +178,19 @@ module.exports.forgotPassword = catchAsync(async (req, res, next) => {
   const resetToken = user.createPasswordResetToken();
   user.save({ validateBeforeSave: false });
 
-  const resetURL = `${req.protocol}://${req.get(
-    "host"
-  )}/api/v1/users/resetPassword/${resetToken}`;
-
-  const message = `Forgot your password submit a patch request on this URL ${resetURL}. If you didn't forgot your password please ignore this email`;
-
+  // 3) Send it to users email
   try {
-    await sendMail({
-      email: user.email,
-      subject: "Your password reset token (valid for 10 minutes)",
-      message,
-    });
-  } catch (ex) {
+    const resetURL = `${req.protocol}://${req.get(
+      "host"
+    )}/api/v1/users/resetPassword/${resetToken}`;
+    await new Email(user, resetURL).sendPasswordReset();
+  } catch (err) {
+    console.log(err);
     user.passwordResetToken = undefined;
-    user.passwordResetTokenExpire = undefined;
+    user.passwordResetExpire = undefined;
     user.save({ validateBeforeSave: false });
     return next(
-      new AppError("Error sending email please try again later.", 500)
+      new AppError("There was an error sending the email! Try again later", 500)
     );
   }
 
@@ -176,7 +233,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   }
   user.password = req.body.password;
   user.passwordConfirm = req.body.passwordConfirm;
-  console.log(user);
+
   await user.save();
 
   createSendToken(user, 200, res);

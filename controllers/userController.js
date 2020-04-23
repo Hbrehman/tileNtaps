@@ -1,6 +1,7 @@
 const _ = require("underscore");
 const User = require("../models/userModel");
 const catchAsync = require("./../utils/catchAsync");
+const AppError = require("./../utils/appError");
 
 exports.createUser = async (req, res, next) => {
   const user = await User.create(
@@ -31,6 +32,14 @@ exports.getOneUsers = async (req, res, next) => {
   res.status(200).json({
     status: "success",
     data: user,
+  });
+};
+
+exports.getMe = async (req, res, next) => {
+  console.log(res.user);
+  res.status(200).json({
+    status: "success",
+    data: res.user,
   });
 };
 

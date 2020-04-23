@@ -1,13 +1,13 @@
-// const nodemailer = require("nodemailer");
-// const pug = require("pug");
-// const htmlToText = require("html-to-text");
+const nodemailer = require("nodemailer");
+const pug = require("pug");
+const htmlToText = require("html-to-text");
 
 module.exports = class Email {
   constructor(user, url) {
     this.to = user.email;
     this.firstname = user.name.split(" ")[0];
     this.url = url;
-    this.from = `Habib Ur Rehman <${process.env.EMAIL_FROM}>`;
+    this.from = `tileNtaps <${process.env.EMAIL_FROM}>`;
   }
 
   newTransport() {
@@ -55,11 +55,15 @@ module.exports = class Email {
   async sendPasswordReset() {
     await this.send(
       "passwordReset",
-      "Your password reset token (valid for only 10 minutes"
+      "Your password reset token (valid for only 10 minutes)"
     );
   }
 
+  async sendVerification() {
+    await this.send("verificationEmail", "Email Verification");
+  }
+
   async sendWelcome() {
-    await this.send("welcome", "Welcome to the Natours Family!");
+    await this.send("welcome", "Welcome to the tileNtaps Family!");
   }
 };

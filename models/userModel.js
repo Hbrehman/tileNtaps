@@ -46,9 +46,15 @@ const userSchema = new mongoose.Schema({
   passwordChangedAt: Date,
   passwordResetToken: String,
   passwordResetTokenExpire: Date,
+  verificationToken: String,
   active: {
     type: Boolean,
     default: true,
+    select: false,
+  },
+  isVerified: {
+    type: Boolean,
+    default: false,
     select: false,
   },
 });
@@ -83,7 +89,7 @@ userSchema.methods.comparePassword = async function (
 };
 
 userSchema.methods.changedPasswordAfter = function (tokenIssueTime) {
-  console.log(tokenIssueTime, this.passwordChangedAt);
+  // console.log(tokenIssueTime, this.passwordChangedAt);
   return new Date(Date.now() + tokenIssueTime) < this.passwordChangedAt;
 };
 

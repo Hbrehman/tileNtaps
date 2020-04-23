@@ -21,10 +21,10 @@ const orderRouter = require("./routes/orderRoutes");
 app.use(cookieParser());
 // to handel cors issues
 // app.options("*", cors());
-app.use(cors({ credentials: true, origin: "http://127.0.0.1:5501" }));
+app.use(cors({ credentials: true, origin: "http://127.0.0.1" }));
 
 app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5501");
+  res.header("Access-Control-Allow-Origin", "http://127.0.0.1");
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
   res.header(
@@ -60,13 +60,14 @@ if (process.env.NODE_ENV === "development") {
 app.use(compression());
 
 app.all("*", (req, res, next) => {
-  console.log("cookies", req.cookies);
-  next();
-});
+  var fullUrl = req.protocol + "://" + req.get("host") + req.originalUrl;
+  console.log(fullUrl);
+  // var origin = req.get("origin");
+  var origin = req.headers.origin;
+  console.log(origin, "origin");
 
-app.get("/getCookie", (req, res, next) => {
-  res.cookie("jwt", "token", { httpOnly: false });
-  res.send("cookie sent");
+  // console.log("cookies", req.cookies);
+  next();
 });
 
 app.use("/api/v1/users", userRouter);
