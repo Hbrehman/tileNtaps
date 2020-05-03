@@ -1,4 +1,5 @@
 const express = require("express");
+const multer = require("multer");
 const router = express.Router();
 
 const userController = require("../controllers/userController");
@@ -6,6 +7,9 @@ const authController = require("../controllers/authController");
 // Only admin should be able to access this route
 
 router.get("/getMe", authController.protect, userController.getMe);
+router.post("/adminLogin", authController.checkIfAdmin, authController.logIn);
+router.get("/logout", authController.protect, authController.logout);
+
 router
   .route("/")
   .get(
@@ -16,8 +20,29 @@ router
   .post(
     authController.protect,
     authController.restrictTo("admin"),
+    userController.uploadProfilePic,
+    userController.resizeUserPhoto,
     userController.createUser
   );
+
+router.put(
+  "/updateUser/:id",
+  authController.protect,
+  authController.restrictTo("admin"),
+  userController.uploadProfilePic,
+  userController.resizeUserPhoto,
+  userController.updateUser
+);
+
+router.patch(
+  "/DeleteUser/:id",
+  authController.protect,
+  authController.restrictTo("admin"),
+  userController.uploadProfilePic,
+  userController.resizeUserPhoto,
+  userController.deleteUser
+);
+
 router.get(
   "/:id",
   authController.protect,

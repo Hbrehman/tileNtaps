@@ -42,7 +42,7 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please provide summary for product"],
     minlength: 25,
-    maxlength: 100,
+    maxlength: 200,
   },
   company: {
     type: String,

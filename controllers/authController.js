@@ -26,22 +26,21 @@ const createSendToken = (user, statusCode, res) => {
   if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
   res.cookie("jwt", token, cookieOptions);
 
-  const userInJSON = JSON.stringify(user);
   res.cookie("user", user._id, { httpOnly: false });
 
   user.password = undefined;
-  // res.status(statusCode).json({
-  //   status: "success",
-  //   token,
-  //   data: {
-  //     user,
-  //   },
-  // });
-
-  res.writeHead(301, {
-    Location: "http://127.0.0.1:5501/dist/index.html",
+  res.status(statusCode).json({
+    status: "success",
+    token,
+    data: {
+      user,
+    },
   });
-  res.end();
+
+  // res.writeHead(301, {
+  //   Location: "products.html",
+  // });
+  // res.end();
 };
 
 module.exports.SignUp = catchAsync(async (req, res, next) => {
@@ -120,6 +119,8 @@ module.exports.logIn = catchAsync(async (req, res, next) => {
 
 module.exports.protect = catchAsync(async (req, res, next) => {
   let token;
+
+  // console.log(req.cookies);
 
   //   1) Check if token exists
   if (
@@ -249,3 +250,24 @@ exports.restrictTo = (...roles) => {
     next();
   };
 };
+
+exports.checkIfAdmin = catchAsync(async (req, res, next) => {
+  const user = await User.findOne({ email: req.body.email }).select("role");
+
+  if (!(user.role === "admin")) {
+    return next(
+      new AppError("You do not have permission to perform this action.", 403)
+    );
+  }
+  next();
+});
+
+exports.logout = catchAsync(async (req, res, next) => {
+  res.cookie("jwt", "token", { httpOnly: true });
+
+  res.cookie("user", "idot you are logged out", { httpOnly: false });
+
+  res.status(200).json({
+    status: "success",
+  });
+});

@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema({
   },
   photo: {
     type: String,
+    default: "default.jpg",
   },
   password: {
     type: String,
@@ -39,7 +40,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    select: false,
+    // select: false,
     enum: ["admin", "manager", "user"],
     default: "user",
   },
@@ -61,7 +62,11 @@ const userSchema = new mongoose.Schema({
 
 userSchema.pre(/^find/, async function (next) {
   // this keyword here points to current query
-  this.find({ active: { $ne: false } });
+  this.find({
+    active: { $ne: false },
+    isVerified: { $ne: false },
+    // role: { $ne: "admin" },
+  });
   next();
 });
 
