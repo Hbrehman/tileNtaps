@@ -29,6 +29,14 @@ const createSendToken = (user, statusCode, res) => {
   res.cookie("user", user._id, { httpOnly: false });
 
   user.password = undefined;
+
+  if (statusCode === 201) {
+    res.writeHead(301, {
+      Location: "http://127.0.0.1:8080/products.html",
+    });
+    return res.end();
+  }
+
   res.status(statusCode).json({
     status: "success",
     token,
@@ -36,11 +44,6 @@ const createSendToken = (user, statusCode, res) => {
       user,
     },
   });
-
-  // res.writeHead(301, {
-  //   Location: "products.html",
-  // });
-  // res.end();
 };
 
 module.exports.SignUp = catchAsync(async (req, res, next) => {
@@ -78,7 +81,6 @@ module.exports.redirectAfterVerification = catchAsync(
     let user = await User.findOne({
       verificationToken: token,
     });
-
     try {
       // 1) varification token
       const decoded = await promisify(jwt.verify)(
@@ -169,7 +171,6 @@ module.exports.protect = catchAsync(async (req, res, next) => {
 
 module.exports.forgotPassword = catchAsync(async (req, res, next) => {
   const { email } = req.body;
-  console.log(req.body);
 
   const user = await User.findOne({ email });
 
@@ -201,7 +202,12 @@ module.exports.forgotPassword = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.verifyPasswordResetToken = catchAsync(async (req, res, next) => {
+  //
+});
+
 exports.resetPassword = catchAsync(async (req, res, next) => {
+  console.log(req.body);
   // Hash token
   const hashedToken = crypto
     .createHash("sha256")
@@ -263,9 +269,13 @@ exports.checkIfAdmin = catchAsync(async (req, res, next) => {
 });
 
 exports.logout = catchAsync(async (req, res, next) => {
-  res.cookie("jwt", "token", { httpOnly: true });
+  const cookieOptions = {
+    expires: new Date(Date.now + 60 * 1000),
+    httpOnly: true,
+  };
+  res.cookie("jwt", "IdotYouAreLoggedOut", cookieOptions);
 
-  res.cookie("user", "idot you are logged out", { httpOnly: false });
+  res.cookie("user", "Nothing", { httpOnly: false });
 
   res.status(200).json({
     status: "success",

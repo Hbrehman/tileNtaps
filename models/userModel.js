@@ -64,7 +64,7 @@ userSchema.pre(/^find/, async function (next) {
   // this keyword here points to current query
   this.find({
     active: { $ne: false },
-    isVerified: { $ne: false },
+    // isVerified: { $ne: false },
     // role: { $ne: "admin" },
   });
   next();
