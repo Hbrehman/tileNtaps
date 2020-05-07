@@ -56,6 +56,10 @@ router.post("/login", authController.logIn);
 router.post("/forgotPassword", authController.forgotPassword);
 router.post("/resetPassword/:token", authController.resetPassword);
 router.post(
+  "/verifyPasswordResetToken/:token",
+  authController.verifyPasswordResetToken
+);
+router.post(
   "/updatePassword",
   authController.protect,
   authController.updatePassword

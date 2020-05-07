@@ -165,7 +165,7 @@ module.exports.protect = catchAsync(async (req, res, next) => {
     );
   }
 
-  res.user = currentUser;
+  req.user = currentUser;
   next();
 });
 
@@ -184,7 +184,7 @@ module.exports.forgotPassword = catchAsync(async (req, res, next) => {
   try {
     const resetURL = `${req.protocol}://${req.get(
       "host"
-    )}/api/v1/users/resetPassword/${resetToken}`;
+    )}/api/v1/users/verifyPasswordResetToken/${resetToken}`;
     await new Email(user, resetURL).sendPasswordReset();
   } catch (err) {
     console.log(err);
@@ -203,7 +203,36 @@ module.exports.forgotPassword = catchAsync(async (req, res, next) => {
 });
 
 exports.verifyPasswordResetToken = catchAsync(async (req, res, next) => {
-  //
+  console.log(req.params.token);
+  // Hash token
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(req.params.token)
+    .digest("hex");
+
+  const user = await User.findOne({
+    passwordResetToken: hashedToken,
+    passwordResetTokenExpire: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    return next(new AppError("Token is invalid or has expired.", 400));
+  }
+
+  const resetToken = user.createPasswordResetToken();
+  user.save({ validateBeforeSave: false });
+
+  const cookieOptions = {
+    expires: new Date(Date.now + 15 * 60 * 1000),
+    httpOnly: false,
+  };
+  if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
+  res.cookie("passwordResetToken", resetToken, cookieOptions);
+
+  res.writeHead(301, {
+    Location: "http://127.0.0.1:8080/products.html",
+  });
+  return res.end();
 });
 
 exports.resetPassword = catchAsync(async (req, res, next) => {
@@ -228,7 +257,7 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
   user.passwordResetToken = undefined;
   user.passwordResetTokenExpire = undefined;
   await user.save();
-
+  res.cookie("passwordResetToken", "", { httpOnly: false });
   createSendToken(user, 200, res);
 });
 
@@ -248,7 +277,7 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
 
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
-    if (!roles.includes(res.user.role)) {
+    if (!roles.includes(req.user.role)) {
       return next(
         new AppError("You do not have permission to perform this action.", 403)
       );

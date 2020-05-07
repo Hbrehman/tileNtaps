@@ -72,7 +72,7 @@ app.all("*", (req, res, next) => {
 
   // console.log(req.body);
 
-  // console.log("cookies", req.cookies);
+  console.log("cookies", req.cookies);
   next();
 });
 
