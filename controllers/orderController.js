@@ -1,15 +1,15 @@
 const stripe = require("stripe")("sk_test_2qYMVsVPHvUwbOjD4SNXbpgR00MTKL4oGY");
 const catchAsync = require("./../utils/catchAsync");
 const appError = require("./../utils/appError");
+const Order = require("./../models/orderModel");
 
 module.exports.getCheckoutSession = catchAsync(async (req, res, next) => {
-  //   console.log(req.body);
   const { cart } = req.body;
   const { lineItems } = req.body;
-
+  // console.log(cart);
   const checkout = await stripe.checkout.sessions.create({
     payment_method_types: ["card"],
-    success_url: "http://127.0.0.1:8080/products.html",
+    success_url: `http://127.0.0.1:8080/products.html?price=${cart.totalPrice}&quantity=${cart.totalQty}`,
     cancel_url: "http://127.0.0.1:8080/shoppingCart.html",
     customer_email: req.user.email,
     client_reference_id: "req.params.tourId",
@@ -20,4 +20,14 @@ module.exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     status: "success",
     checkout,
   });
+});
+
+module.exports.createOrderCheckout = catchAsync(async (req, res, next) => {
+  const { totalPrice, totalQty } = req.query;
+  console.log(req.user);
+  if (totalPrice && totalQty) {
+    console.log(totalPrice, totalQty, req.user._id);
+    await Order.create({ totalPrice, totalQty });
+  }
+  next();
 });

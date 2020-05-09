@@ -1,6 +1,7 @@
 const express = require("express");
 const productController = require("./../controllers/productController");
 const authController = require("../controllers/authController");
+const orderController = require("../controllers/orderController");
 const router = express.Router();
 
 router
@@ -12,7 +13,7 @@ router
     productController.resizeProductImage,
     productController.createProduct
   )
-  .get(productController.getAllProducts);
+  .get(orderController.createOrderCheckout, productController.getAllProducts);
 
 router
   .route("/:id")

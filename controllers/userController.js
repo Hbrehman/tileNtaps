@@ -128,7 +128,7 @@ exports.getOneUsers = async (req, res, next) => {
 };
 
 exports.getMe = async (req, res, next) => {
-  console.log(req.user);
+  // console.log(req.user);
   res.status(200).json({
     status: "success",
     data: req.user,

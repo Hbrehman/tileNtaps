@@ -203,7 +203,7 @@ module.exports.forgotPassword = catchAsync(async (req, res, next) => {
 });
 
 exports.verifyPasswordResetToken = catchAsync(async (req, res, next) => {
-  console.log(req.params.token);
+  // console.log(req.params.token);
   // Hash token
   const hashedToken = crypto
     .createHash("sha256")
@@ -236,7 +236,7 @@ exports.verifyPasswordResetToken = catchAsync(async (req, res, next) => {
 });
 
 exports.resetPassword = catchAsync(async (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   // Hash token
   const hashedToken = crypto
     .createHash("sha256")
