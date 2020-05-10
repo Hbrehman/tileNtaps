@@ -28,9 +28,8 @@ app.use(cookieParser());
 //   })
 // );
 
-app.use(corsHandler());
-
-function corsHandler(req, res, next) {
+app.options("*", function (req, res, next) {
+  console.log("called");
   res.header(
     "Access-Control-Allow-Origin",
     "https://hbrehman.github.io/frontendTileNTaps/"
@@ -43,7 +42,7 @@ function corsHandler(req, res, next) {
   );
   res.setHeader("Access-Control-Allow-Headers", "Set-Cookie");
   next();
-}
+});
 
 // Middleware to serve static content
 app.use(express.static(`${__dirname}/public`));
