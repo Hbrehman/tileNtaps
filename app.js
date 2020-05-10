@@ -20,13 +20,14 @@ const orderRouter = require("./routes/orderRoutes");
 // Cookie parser
 app.use(cookieParser());
 // to handel cors issues
-// app.options("*", cors());
-// app.use(
-//   cors({
-//     credentials: true,
-//     origin: "https://hbrehman.github.io/frontendTileNTaps/",
-//   })
-// );
+app.use(cors());
+app.options(
+  "*",
+  cors({
+    credentials: true,
+    origin: "https://hbrehman.github.io/frontendTileNTaps/",
+  })
+);
 
 app.options("*", function (req, res, next) {
   console.log("called");
