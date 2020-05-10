@@ -21,18 +21,24 @@ const orderRouter = require("./routes/orderRoutes");
 app.use(cookieParser());
 // to handel cors issues
 // app.options("*", cors());
-app.use(cors());
-// { credentials: true, origin: "http://127.0.0.1" }
-// app.use(function (req, res, next) {
-//   res.header("Access-Control-Allow-Origin", "http://127.0.0.1");
-//   res.header("Access-Control-Allow-Credentials", true);
-//   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, x-auth-token, Content-Type, Accept, Authorization"
-//   );
-//   next();
-// });
+app.use(
+  cors({
+    credentials: true,
+    origin: "https://hbrehman.github.io",
+  })
+);
+
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "https://hbrehman.github.io");
+  res.header("Access-Control-Allow-Credentials", true);
+  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, x-auth-token, Content-Type, Accept, Authorization"
+  );
+  res.setHeader("Access-Control-Allow-Headers", "Set-Cookie");
+  next();
+});
 
 // Middleware to serve static content
 app.use(express.static(`${__dirname}/public`));
