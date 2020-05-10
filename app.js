@@ -7,19 +7,16 @@ const cookieParser = require("cookie-parser");
 const xss = require("xss-clean");
 const hpp = require("hpp");
 const mongoSanitize = require("express-mongo-sanitize");
-const app = express();
 const globalErrorHandler = require("./controllers/errorController");
 const AppError = require("./utils/appError");
 const compression = require("compression");
+const app = express();
 
 // const users = require("./routes/userRouter");
 const userRouter = require("./routes/userRoutes");
 const productRouter = require("./routes/productRoutes");
 const orderRouter = require("./routes/orderRoutes");
 
-// Cookie parser
-app.use(cookieParser());
-// to handel cors issues
 app.use(cors());
 app.options(
   "*",
@@ -28,6 +25,8 @@ app.options(
     origin: "https://hbrehman.github.io/frontendTileNTaps/",
   })
 );
+
+// to handel cors issues
 
 app.options("*", function (req, res, next) {
   console.log("called");
@@ -44,6 +43,9 @@ app.options("*", function (req, res, next) {
   res.setHeader("Access-Control-Allow-Headers", "Set-Cookie");
   next();
 });
+
+// Cookie parser
+app.use(cookieParser());
 
 // Middleware to serve static content
 app.use(express.static(`${__dirname}/public`));
@@ -79,7 +81,7 @@ app.all("*", (req, res, next) => {
   // console.log(fullUrl);
   // var origin = req.get("origin");
   // var origin = req.headers.origin;
-  // console.log(origin, "origin");
+  console.log(origin, "origin");
 
   // console.log(req.body);
 
