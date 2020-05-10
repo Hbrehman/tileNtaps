@@ -17,29 +17,22 @@ const userRouter = require("./routes/userRoutes");
 const productRouter = require("./routes/productRoutes");
 const orderRouter = require("./routes/orderRoutes");
 
-const User = require("./models/userModel");
-app.get("/", async (req, res, next) => {
-  const user = await User.find();
-  console.log(user);
-  res.send(user);
-});
-
 // Cookie parser
 app.use(cookieParser());
 // to handel cors issues
 // app.options("*", cors());
-app.use(cors({ credentials: true, origin: "http://127.0.0.1" }));
-
-app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "http://127.0.0.1");
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, x-auth-token, Content-Type, Accept, Authorization"
-  );
-  next();
-});
+app.use(cors());
+// { credentials: true, origin: "http://127.0.0.1" }
+// app.use(function (req, res, next) {
+//   res.header("Access-Control-Allow-Origin", "http://127.0.0.1");
+//   res.header("Access-Control-Allow-Credentials", true);
+//   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, x-auth-token, Content-Type, Accept, Authorization"
+//   );
+//   next();
+// });
 
 // Middleware to serve static content
 app.use(express.static(`${__dirname}/public`));
