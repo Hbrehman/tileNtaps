@@ -24,12 +24,15 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: "https://hbrehman.github.io",
+    origin: "https://hbrehman.github.io/frontendTileNTaps/",
   })
 );
 
 app.use(function (req, res, next) {
-  res.header("Access-Control-Allow-Origin", "https://hbrehman.github.io");
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://hbrehman.github.io/frontendTileNTaps/"
+  );
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
   res.header(
