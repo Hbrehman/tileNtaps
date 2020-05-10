@@ -1,14 +1,21 @@
 const mongoose = require("mongoose");
 
+const DB = process.env.DATABASE.replace(
+  "<PASSWORD>",
+  process.env.DATABASE_PASSWORD
+);
+
+const localDB = process.env.DATABASE_LOCAL;
+
 mongoose
-  .connect("mongodb://localhost:27017/tileNtaps", {
+  .connect(DB, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
     useCreateIndex: true,
-    useFindAndModify: false
+    useFindAndModify: false,
   })
   .then(() => {
-    console.log("Successfully connected to mongodb...");
+    console.log("DB connection Successful");
   })
   .catch(() => {
     console.log("Problem connecting to mongodb...");

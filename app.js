@@ -17,6 +17,13 @@ const userRouter = require("./routes/userRoutes");
 const productRouter = require("./routes/productRoutes");
 const orderRouter = require("./routes/orderRoutes");
 
+const User = require("./models/userModel");
+app.get("/", async (req, res, next) => {
+  const user = await User.find();
+  console.log(user);
+  res.send(user);
+});
+
 // Cookie parser
 app.use(cookieParser());
 // to handel cors issues
