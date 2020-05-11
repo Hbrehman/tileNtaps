@@ -19,27 +19,29 @@ const orderRouter = require("./routes/orderRoutes");
 
 // app.enable("trust proxy");
 
-// app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: "https://hbrehman.github.io",
+  })
+);
 // app.options(
 //   "*",
-//   cors({
-//     credentials: true,
-//     origin: "https://hbrehman.github.io/frontendTileNTaps/",
-//   })
+//   cors()
 // );
 
 // to handel cors issues
-app.options("*", function (req, res, next) {
-  console.log("called");
-  res.header("Access-Control-Allow-Origin", "https://hbrehman.github.io");
-  res.header("Access-Control-Allow-Credentials", true);
-  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, x-auth-token, content-type, Content-Type, Accept, Authorization Set-Cookie"
-  );
-  next();
-});
+// app.options("*", function (req, res, next) {
+//   console.log("called");
+//   res.header("Access-Control-Allow-Origin", "https://hbrehman.github.io");
+//   res.header("Access-Control-Allow-Credentials", true);
+//   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, x-auth-token, content-type, Content-Type, Accept, Authorization Set-Cookie"
+//   );
+//   next();
+// });
 
 // Cookie parser
 app.use(cookieParser());
