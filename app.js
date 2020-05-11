@@ -31,10 +31,7 @@ const orderRouter = require("./routes/orderRoutes");
 // to handel cors issues
 app.options("*", function (req, res, next) {
   console.log("called");
-  res.header(
-    "Access-Control-Allow-Origin",
-    "https://hbrehman.github.io/frontendTileNTaps"
-  );
+  res.header("Access-Control-Allow-Origin", "https://hbrehman.github.io");
   res.header("Access-Control-Allow-Credentials", true);
   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
   res.header(
