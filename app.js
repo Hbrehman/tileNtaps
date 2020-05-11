@@ -36,9 +36,8 @@ app.options("*", function (req, res, next) {
   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
   res.header(
     "Access-Control-Allow-Headers",
-    "Origin, x-auth-token, content-type, Content-Type, Accept, Authorization"
+    "Origin, x-auth-token, content-type, Content-Type, Accept, Authorization Set-Cookie"
   );
-  res.setHeader("Access-Control-Allow-Headers", "Set-Cookie");
   next();
 });
 
