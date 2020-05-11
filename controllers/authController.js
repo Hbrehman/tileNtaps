@@ -20,8 +20,8 @@ const createSendToken = (user, statusCode, res) => {
     expires: new Date(
       Date.now + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
     ),
-    // secure: true, // because of this option set to true, the communication will only happen on https connection on http communication will not happen
-    httpOnly: true, // we set it true because the cookie can newer be accessed and modified by the browser anyway. it prevents xss attcks
+
+    httpOnly: true,
   };
   if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
   res.cookie("jwt", token, cookieOptions);

@@ -17,17 +17,18 @@ const userRouter = require("./routes/userRoutes");
 const productRouter = require("./routes/productRoutes");
 const orderRouter = require("./routes/orderRoutes");
 
-// app.use(cors());
-// app.options(
-//   "*",
-//   cors({
-//     credentials: true,
-//     origin: "https://hbrehman.github.io/frontendTileNTaps/",
-//   })
-// );
+app.enable("trust proxy");
+
+app.use(cors());
+app.options(
+  "*",
+  cors({
+    credentials: true,
+    origin: "https://hbrehman.github.io/frontendTileNTaps/",
+  })
+);
 
 // to handel cors issues
-
 app.options("*", function (req, res, next) {
   console.log("called");
   res.header(
