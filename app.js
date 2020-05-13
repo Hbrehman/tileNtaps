@@ -19,29 +19,21 @@ const orderRouter = require("./routes/orderRoutes");
 
 // app.enable("trust proxy");
 
+// For Development environment
 app.use(
   cors({
     credentials: true,
-    origin: "https://hbrehman.github.io",
+    origin: "http://127.0.0.1:8080",
   })
 );
-// app.options(
-//   "*",
-//   cors()
-// );
 
-// to handel cors issues
-// app.options("*", function (req, res, next) {
-//   console.log("called");
-//   res.header("Access-Control-Allow-Origin", "https://hbrehman.github.io");
-//   res.header("Access-Control-Allow-Credentials", true);
-//   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-//   res.header(
-//     "Access-Control-Allow-Headers",
-//     "Origin, x-auth-token, content-type, Content-Type, Accept, Authorization Set-Cookie"
-//   );
-//   next();
-// });
+// For production Environment
+// app.use(
+//   cors({
+//     credentials: true,
+//     origin: "https://hbrehman.github.io",
+//   })
+// );
 
 // Cookie parser
 app.use(cookieParser());
@@ -76,11 +68,11 @@ if (process.env.NODE_ENV === "development") {
 app.use(compression());
 
 app.all("*", (req, res, next) => {
-  var origin = req.protocol + "://" + req.get("host") + req.originalUrl;
+  // var origin = req.protocol + "://" + req.get("host") + req.originalUrl;
   // console.log(fullUrl);
   // var origin = req.get("origin");
   // var origin = req.headers.origin;
-  console.log(origin, "origin");
+  // console.log(origin, "origin");
 
   // console.log(req.body);
 

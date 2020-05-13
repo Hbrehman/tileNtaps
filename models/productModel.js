@@ -28,9 +28,22 @@ const productSchema = new mongoose.Schema({
   type: {
     //   whether it is kitchen tile, bath tile, floor tile, etc
     type: String,
+    enum: [
+      "floor tile",
+      "wall tile",
+      "kitchen tile",
+      "bath tile",
+      "basin mixer",
+      "bathroom set",
+      "faucet",
+      "accessory set",
+      "shower",
+      "indian seat",
+      "commode",
+      "basin",
+      "sink",
+    ],
     required: [true, "Product must have a type"],
-    minlength: 5,
-    maxlength: 50,
   },
   description: {
     type: String,
@@ -65,7 +78,7 @@ const productSchema = new mongoose.Schema({
   },
   imageCover: {
     type: String,
-    // required: [true, "A Product must have a cover image"],
+    required: [true, "A Product must have a cover image"],
   },
   images: [String],
   size: {

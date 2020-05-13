@@ -26,13 +26,11 @@ const createSendToken = (user, statusCode, res) => {
   if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
   res.cookie("jwt", token, cookieOptions);
 
-  res.cookie("user", user._id, { httpOnly: false });
-
   user.password = undefined;
 
   if (statusCode === 201) {
     res.writeHead(301, {
-      Location: "http://127.0.0.1:8080/products.html",
+      Location: `http://127.0.0.1:8080/products.html?user=${user._id}`,
     });
     return res.end();
   }
@@ -303,8 +301,6 @@ exports.logout = catchAsync(async (req, res, next) => {
     httpOnly: true,
   };
   res.cookie("jwt", "IdotYouAreLoggedOut", cookieOptions);
-
-  res.cookie("user", "Nothing", { httpOnly: false });
 
   res.status(200).json({
     status: "success",
