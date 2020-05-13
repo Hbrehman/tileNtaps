@@ -12,7 +12,6 @@ const AppError = require("./utils/appError");
 const compression = require("compression");
 const app = express();
 
-// const users = require("./routes/userRouter");
 const userRouter = require("./routes/userRoutes");
 const productRouter = require("./routes/productRoutes");
 const orderRouter = require("./routes/orderRoutes");
