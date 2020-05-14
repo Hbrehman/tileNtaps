@@ -111,6 +111,9 @@ module.exports.logIn = catchAsync(async (req, res, next) => {
   if (!user || !(await user.comparePassword(password, user.password))) {
     return next(new AppError("Invalid Email or Password.", 400));
   }
+  if (!user.isVerified) {
+    return next(new AppError("Your email address is not verified.", 400));
+  }
 
   //   user = user.select("-password");
 
