@@ -1,4 +1,4 @@
-const stripe = require("stripe")("sk_test_2qYMVsVPHvUwbOjD4SNXbpgR00MTKL4oGY");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const catchAsync = require("./../utils/catchAsync");
 const appError = require("./../utils/appError");
 const Order = require("./../models/orderModel");
@@ -8,11 +8,16 @@ module.exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   const { lineItems } = req.body;
   // console.log(cart);
   const checkout = await stripe.checkout.sessions.create({
+    billing_address_collection: "auto",
+    shipping_address_collection: {
+      allowed_countries: ["PK"],
+    },
     payment_method_types: ["card"],
-    success_url: `http://127.0.0.1:8080/products.html?price=${cart.totalPrice}&quantity=${cart.totalQty}`,
-    cancel_url: "http://127.0.0.1:8080/shoppingCart.html",
+    success_url: `https://hbrehman.github.io/frontendTileNTaps/products.html`,
+    cancel_url:
+      "https://hbrehman.github.io/frontendTileNTaps/shoppingCart.html",
     customer_email: req.user.email,
-    client_reference_id: "req.params.tourId",
+    client_reference_id: req.user.Id,
     line_items: lineItems,
   });
 
@@ -22,12 +27,36 @@ module.exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   });
 });
 
-module.exports.createOrderCheckout = catchAsync(async (req, res, next) => {
-  const { totalPrice, totalQty } = req.query;
-  console.log(req.user);
-  if (totalPrice && totalQty) {
-    console.log(totalPrice, totalQty, req.user._id);
-    await Order.create({ totalPrice, totalQty });
+// module.exports.createOrderCheckout = catchAsync(async (req, res, next) => {
+//   const { totalPrice, totalQty } = req.query;
+//   console.log(req.user);
+//   if (totalPrice && totalQty) {
+//     console.log(totalPrice, totalQty, req.user._id);
+//     await Order.create({ totalPrice, totalQty });
+//   }
+//   next();
+// });
+
+exports.webhookCheckout = (req, res, next) => {
+  let signature;
+  try {
+    signature == req.headers["stripe-signature"];
+    const event = stripe.webhooks.constructEvent(
+      req.body,
+      signature,
+      process.env.STRIPE_WEBHOOK_SECRET
+    );
+  } catch (ex) {
+    return res.status(400).send(`Webhook error: ${ex.message}`);
   }
-  next();
-});
+  if (event.type === "checkout.session.completed") {
+    createBookingCehckout(event.data.object);
+  }
+  res.status(200).json({ received: true });
+};
+
+async function createBookingCehckout(session) {
+  console.log(session);
+}
+
+// A.o.a, If you guys want to get started with cloud computing but you don't know where to start or even you have no idea what is cloud computing or what is AWS I highly recommend you to attend this workshop. After that, everything will be crystal clear to you. This is going to be a high content workshop. Mr. Anjani Phuyal (Global CTO of Genese Solution) and Mr. Raja Mehmood (CEO of Genese solution Pakistan) will be the speakers. And most of all, it's free, they are not gonna cost anything from you for this workshop. So it's a huge opportunity to increase your knowledge. If you guys have any questions regarding this workshop or AWS cloud computing or want to ask anything else please feel free to throw a DM in my inbox. Here is the registration link

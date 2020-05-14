@@ -30,7 +30,7 @@ const createSendToken = (user, statusCode, res) => {
 
   if (statusCode === 201) {
     res.writeHead(301, {
-      Location: `http://127.0.0.1:8080/products.html?user=${user._id}`,
+      Location: `https://hbrehman.github.io/frontendTileNTaps/products.html?user=${user._id}`,
     });
     return res.end();
   }
@@ -220,15 +220,15 @@ exports.verifyPasswordResetToken = catchAsync(async (req, res, next) => {
   const resetToken = user.createPasswordResetToken();
   user.save({ validateBeforeSave: false });
 
-  const cookieOptions = {
-    expires: new Date(Date.now + 15 * 60 * 1000),
-    httpOnly: false,
-  };
-  if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
-  res.cookie("passwordResetToken", resetToken, cookieOptions);
+  // const cookieOptions = {
+  //   expires: new Date(Date.now + 15 * 60 * 1000),
+  //   httpOnly: false,
+  // };
+  // if (process.env.NODE_ENV === "production") cookieOptions.secure = true;
+  // res.cookie("", , cookieOptions);
 
   res.writeHead(301, {
-    Location: "http://127.0.0.1:8080/products.html",
+    Location: `https://hbrehman.github.io/frontendTileNTaps/products.html?passwordResetToken=${resetToken}`,
   });
   return res.end();
 });

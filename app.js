@@ -8,6 +8,7 @@ const xss = require("xss-clean");
 const hpp = require("hpp");
 const mongoSanitize = require("express-mongo-sanitize");
 const globalErrorHandler = require("./controllers/errorController");
+const orderController = require("./controllers/orderController");
 const AppError = require("./utils/appError");
 const compression = require("compression");
 const app = express();
@@ -19,20 +20,20 @@ const orderRouter = require("./routes/orderRoutes");
 // app.enable("trust proxy");
 
 // For Development environment
-app.use(
-  cors({
-    credentials: true,
-    origin: "http://127.0.0.1:8080",
-  })
-);
-
-// For production Environment
 // app.use(
 //   cors({
 //     credentials: true,
-//     origin: "https://hbrehman.github.io",
+//     origin: "http://127.0.0.1:8080",
 //   })
 // );
+
+// For production Environment
+app.use(
+  cors({
+    credentials: true,
+    origin: "https://hbrehman.github.io",
+  })
+);
 
 // Cookie parser
 app.use(cookieParser());
@@ -42,6 +43,12 @@ app.use(express.static(`${__dirname}/public`));
 
 // Set security HTTP Headers
 // app.use(helmet());
+
+app.post(
+  "/webhook-checkout",
+  express.raw({ type: "application/json" }),
+  orderController.webhookCheckout
+);
 
 // Body parser, reading data from the body into req.body
 // app.use(express.json({ limit: "10kb" }));

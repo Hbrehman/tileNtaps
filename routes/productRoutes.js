@@ -13,7 +13,7 @@ router
     productController.resizeProductImage,
     productController.createProduct
   )
-  .get(orderController.createOrderCheckout, productController.getAllProducts);
+  .get(productController.getAllProducts);
 
 router
   .route("/:id")
