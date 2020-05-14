@@ -58,5 +58,3 @@ exports.webhookCheckout = (req, res, next) => {
 async function createBookingCehckout(session) {
   console.log(session);
 }
-
-// A.o.a, If you guys want to get started with cloud computing but you don't know where to start or even you have no idea what is cloud computing or what is AWS I highly recommend you to attend this workshop. After that, everything will be crystal clear to you. This is going to be a high content workshop. Mr. Anjani Phuyal (Global CTO of Genese Solution) and Mr. Raja Mehmood (CEO of Genese solution Pakistan) will be the speakers. And most of all, it's free, they are not gonna cost anything from you for this workshop. So it's a huge opportunity to increase your knowledge. If you guys have any questions regarding this workshop or AWS cloud computing or want to ask anything else please feel free to throw a DM in my inbox. Here is the registration link
