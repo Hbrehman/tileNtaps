@@ -57,4 +57,10 @@ exports.webhookCheckout = (req, res, next) => {
 
 async function createBookingCehckout(session) {
   console.log(session);
+  const item = session.display_items;
+  const customerEmail = session.customer_email;
+  const customerAddress = session.shipping[address];
+  const customerName = session.name;
+  console.log("Here goes useful information");
+  console.log({ item, customerEmail, customerName, customerAddress });
 }
