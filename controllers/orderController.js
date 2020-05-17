@@ -38,10 +38,10 @@ module.exports.getCheckoutSession = catchAsync(async (req, res, next) => {
 // });
 
 exports.webhookCheckout = (req, res, next) => {
-  let signature;
+  let event;
+  const signature = req.headers["stripe-signature"];
   try {
-    signature == req.headers["stripe-signature"];
-    const event = stripe.webhooks.constructEvent(
+    event = stripe.webhooks.constructEvent(
       req.body,
       signature,
       process.env.STRIPE_WEBHOOK_SECRET
