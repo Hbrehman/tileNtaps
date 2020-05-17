@@ -14,11 +14,12 @@ module.exports.getCheckoutSession = catchAsync(async (req, res, next) => {
       allowed_countries: ["PK"],
     },
     payment_method_types: ["card"],
+    metadata: JSON.stringify(cart),
     success_url: `https://hbrehman.github.io/frontendTileNTaps/products.html`,
     cancel_url:
       "https://hbrehman.github.io/frontendTileNTaps/shoppingCart.html",
     customer_email: req.user.email,
-    client_reference_id: req.user.id,
+    client_reference_id: req.user._id,
     line_items: lineItems,
   });
 
@@ -27,16 +28,6 @@ module.exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     checkout,
   });
 });
-
-// module.exports.createOrderCheckout = catchAsync(async (req, res, next) => {
-//   const { totalPrice, totalQty } = req.query;
-//   console.log(req.user);
-//   if (totalPrice && totalQty) {
-//     console.log(totalPrice, totalQty, req.user._id);
-//     await Order.create({ totalPrice, totalQty });
-//   }
-//   next();
-// });
 
 exports.webhookCheckout = (req, res, next) => {
   let event;
@@ -60,23 +51,23 @@ async function createBookingCehckout(session) {
   console.log(session);
   const items = session.display_items;
   const customerEmail = session.customer_email;
-  const customerAddress = session.shipping.address;
+  const deliveryAddress = session.shipping.address;
   const customerName = session.shipping.name;
   const cusotmerId = session.client_reference_id;
-  const totalPrice = 0;
+  // const cusotmerId = session.client_reference_id;
+  let totalPrice = 0;
   items.forEach((el) => {
     totalPrice += el.amount;
   });
+  totalPrice /= 100;
 
-  const user = await User.findById(cusotmerId);
-
+  let user = await User.findById(cusotmerId);
+  console.log(user);
   console.log("Here goes useful information");
   console.log({
     user,
     item,
-    customerEmail,
-    customerName,
-    customerAddress,
+    deliveryAddress,
     totalPrice,
   });
 }

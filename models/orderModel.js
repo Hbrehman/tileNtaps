@@ -6,12 +6,21 @@ const orderSchema = new mongoose.Schema({
     ref: "User",
     required: [true, "Order must belong to a User"],
   },
-  //   cart: {
-  //     type: Object,
-  //     required: [true, "Order must be associated with a shopping cart"],
-  //   },
-  price: {
+  name: {
     type: String,
+    required: [true, "Name of user if required"],
+  },
+  items: {
+    type: [Object],
+    required: [true, "Order must have some items"],
+  },
+  totalPrice: {
+    type: Number,
+    required: [true, "Order must have some total price"],
+  },
+  deliverAddress: {
+    type: Object,
+    required: [true, "An order must have a delivery address"],
   },
 });
 
