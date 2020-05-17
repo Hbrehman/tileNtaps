@@ -51,29 +51,21 @@ exports.webhookCheckout = (req, res, next) => {
 };
 
 async function createBookingCehckout(session) {
-  console.log(session);
   const items = session.display_items;
   const customerEmail = session.customer_email;
   const deliveryAddress = session.shipping.address;
   const name = session.shipping.name;
   const cart = session.client_reference_id;
-  // const cusotmerId = session.client_reference_id;
+
   let totalPrice = 0;
   items.forEach((el) => {
     totalPrice += el.amount;
   });
+
   totalPrice /= 100;
 
   let user = await User.findOne({ email: customerEmail });
-  // console.log(user);
-  console.log("Here goes useful information");
-  console.log({
-    cart,
-    user,
-    deliveryAddress,
-    totalPrice,
-    name,
-  });
+
   const order = await Order.create({
     cart,
     user,
