@@ -2,6 +2,7 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 const catchAsync = require("./../utils/catchAsync");
 const appError = require("./../utils/appError");
 const Order = require("./../models/orderModel");
+const User = require("./../models/userModel");
 
 module.exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   const { cart } = req.body;
@@ -17,7 +18,7 @@ module.exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     cancel_url:
       "https://hbrehman.github.io/frontendTileNTaps/shoppingCart.html",
     customer_email: req.user.email,
-    client_reference_id: req.user.Id,
+    client_reference_id: req.user.id,
     line_items: lineItems,
   });
 
@@ -55,12 +56,27 @@ exports.webhookCheckout = (req, res, next) => {
   res.status(200).json({ received: true });
 };
 
-function createBookingCehckout(session) {
+async function createBookingCehckout(session) {
   console.log(session);
-  const item = session.display_items;
+  const items = session.display_items;
   const customerEmail = session.customer_email;
   const customerAddress = session.shipping.address;
   const customerName = session.shipping.name;
+  const cusotmerId = session.client_reference_id;
+  const totalPrice = 0;
+  items.forEach((el) => {
+    totalPrice += el.amount;
+  });
+
+  const user = await User.findById(cusotmerId);
+
   console.log("Here goes useful information");
-  console.log({ item, customerEmail, customerName, customerAddress });
+  console.log({
+    user,
+    item,
+    customerEmail,
+    customerName,
+    customerAddress,
+    totalPrice,
+  });
 }
