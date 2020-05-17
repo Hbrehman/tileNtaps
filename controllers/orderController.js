@@ -9,6 +9,7 @@ module.exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   let { cart } = req.body;
   cart = await Cart.create({ cart });
   console.log(cart);
+  console.log(cart._id);
   const { lineItems } = req.body;
   // console.log(cart);
   const checkout = await stripe.checkout.sessions.create({
@@ -21,7 +22,7 @@ module.exports.getCheckoutSession = catchAsync(async (req, res, next) => {
     cancel_url:
       "https://hbrehman.github.io/frontendTileNTaps/shoppingCart.html",
     customer_email: req.user.email,
-    client_reference_id: cart._id,
+    client_reference_id: "cart._id",
     line_items: lineItems,
   });
 
