@@ -19,21 +19,23 @@ const orderRouter = require("./routes/orderRoutes");
 
 // app.enable("trust proxy");
 
-// For Development environment
-// app.use(
-//   cors({
-//     credentials: true,
-//     origin: "http://127.0.0.1:8080",
-//   })
-// );
-
-// For production Environment
-app.use(
-  cors({
-    credentials: true,
-    origin: "https://hbrehman.github.io",
-  })
-);
+if (process.env.NODE_ENV === "production") {
+  // For production Environment
+  app.use(
+    cors({
+      credentials: true,
+      origin: "https://hbrehman.github.io",
+    })
+  );
+} else if (process.env.NODE_ENV === "development") {
+  // For Development environment
+  app.use(
+    cors({
+      credentials: true,
+      origin: "http://127.0.0.1:8080",
+    })
+  );
+}
 
 // Cookie parser
 app.use(cookieParser());
