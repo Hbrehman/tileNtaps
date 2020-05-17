@@ -18,7 +18,7 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: [true, "Order must have some total price"],
   },
-  deliverAddress: {
+  deliveryAddress: {
     type: Object,
     required: [true, "An order must have a delivery address"],
   },
