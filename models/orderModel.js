@@ -1,18 +1,18 @@
 const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, "Name of user if required"],
+  },
   user: {
     type: mongoose.Schema.ObjectId,
     ref: "User",
     required: [true, "Order must belong to a User"],
   },
-  name: {
-    type: String,
-    required: [true, "Name of user if required"],
-  },
-  items: {
-    type: [Object],
-    required: [true, "Order must have some items"],
+  cart: {
+    type: mongoose.Schema.ObjectId,
+    required: [true, "Order must have shopping cart"],
   },
   totalPrice: {
     type: Number,

@@ -7,8 +7,8 @@ const Cart = require("./../models/cartModel");
 
 module.exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   let { cart } = req.body;
-  console.log(cart);
   cart = await Cart.create({ cart });
+  console.log(cart);
   const { lineItems } = req.body;
   // console.log(cart);
   const checkout = await stripe.checkout.sessions.create({
@@ -17,7 +17,6 @@ module.exports.getCheckoutSession = catchAsync(async (req, res, next) => {
       allowed_countries: ["PK"],
     },
     payment_method_types: ["card"],
-    metadata: { cart: JSON.stringify(cart) },
     success_url: `https://hbrehman.github.io/frontendTileNTaps/products.html`,
     cancel_url:
       "https://hbrehman.github.io/frontendTileNTaps/shoppingCart.html",
@@ -55,8 +54,8 @@ async function createBookingCehckout(session) {
   const items = session.display_items;
   const customerEmail = session.customer_email;
   const deliveryAddress = session.shipping.address;
-  const customerName = session.shipping.name;
-  const cartId = session.client_reference_id;
+  const name = session.shipping.name;
+  const cart = session.client_reference_id;
   // const cusotmerId = session.client_reference_id;
   let totalPrice = 0;
   items.forEach((el) => {
@@ -68,10 +67,18 @@ async function createBookingCehckout(session) {
   // console.log(user);
   console.log("Here goes useful information");
   console.log({
+    cart,
     user,
-    items,
     deliveryAddress,
     totalPrice,
-    customerName,
+    name,
   });
+  const order = await Order.create({
+    cart,
+    user,
+    deliveryAddress,
+    totalPrice,
+    name,
+  });
+  console.log(order);
 }
