@@ -8,10 +8,10 @@ const Cart = require("./../models/cartModel");
 module.exports.getCheckoutSession = catchAsync(async (req, res, next) => {
   let { cart } = req.body;
   cart = await Cart.create({ cart });
-  console.log(cart);
+
   cartId = `${cart._id}`;
   const { lineItems } = req.body;
-  // console.log(cart);
+
   const checkout = await stripe.checkout.sessions.create({
     billing_address_collection: "auto",
     shipping_address_collection: {
