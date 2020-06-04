@@ -30,7 +30,7 @@ const createSendToken = (user, statusCode, res) => {
 
   if (statusCode === 201) {
     res.writeHead(301, {
-      Location: `https://hbrehman.github.io/frontendTileNTaps/products.html?user=${user._id}`,
+      Location: `https://hbrehman.github.io/frontendTileNTaps/index.html?user=${user._id}`,
     });
     return res.end();
   }
@@ -231,7 +231,7 @@ exports.verifyPasswordResetToken = catchAsync(async (req, res, next) => {
   // res.cookie("", , cookieOptions);
 
   res.writeHead(301, {
-    Location: `https://hbrehman.github.io/frontendTileNTaps/products.html?passwordResetToken=${resetToken}`,
+    Location: `https://hbrehman.github.io/frontendTileNTaps/index.html?passwordResetToken=${resetToken}`,
   });
   return res.end();
 });

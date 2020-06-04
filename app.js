@@ -24,7 +24,7 @@ if (process.env.NODE_ENV === "production") {
   app.use(
     cors({
       credentials: true,
-      origin: "https://hbrehman.github.io",
+      origin: "https://tilentaps.com",
     })
   );
 } else if (process.env.NODE_ENV === "development") {

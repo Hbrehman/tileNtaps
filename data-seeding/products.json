@@ -1,0 +1,87 @@
+[
+  {
+    "images": [
+      "product-887330747186-1588566958323-1.jpeg",
+      "product-556370331632-1588566958342-2.jpeg",
+      "product-528945435854-1588566958345-3.jpeg"
+    ],
+    "name": "Master Bath Tile Design 1",
+    "price": 3400,
+    "type": "bath tile",
+    "description": "some text here some text here some text here some text here some text here some text here",
+    "summary": "some text here some text here some text here",
+    "company": "Master",
+    "category": "tile",
+    "imageCover": "master-bath-tile-10x28 (1).jpg",
+    "size": "10 * 28",
+    "__v": 0
+  },
+  {
+    "images": [
+      "product-887330747186-1588566958323-1.jpeg",
+      "product-556370331632-1588566958342-2.jpeg",
+      "product-528945435854-1588566958345-3.jpeg"
+    ],
+    "name": "Master Bath Tile Design 2",
+    "price": 3400,
+    "type": "bath tile",
+    "description": "some text here some text here some text here some text here some text here some text here",
+    "summary": "some text here some text here some text here",
+    "company": "Master",
+    "category": "tile",
+    "imageCover": "master-bath-tile-10x28 (2).jpg",
+    "size": "10 * 28",
+    "__v": 0
+  },
+  {
+    "images": [
+      "product-887330747186-1588566958323-1.jpeg",
+      "product-556370331632-1588566958342-2.jpeg",
+      "product-528945435854-1588566958345-3.jpeg"
+    ],
+    "name": "Master Bath Tile Design 3",
+    "price": 3400,
+    "type": "bath tile",
+    "description": "some text here some text here some text here some text here some text here some text here",
+    "summary": "some text here some text here some text here",
+    "company": "Master",
+    "category": "tile",
+    "imageCover": "master-bath-tile-10x28 (3).jpg",
+    "size": "10 * 28",
+    "__v": 0
+  },
+  {
+    "images": [
+      "product-887330747186-1588566958323-1.jpeg",
+      "product-556370331632-1588566958342-2.jpeg",
+      "product-528945435854-1588566958345-3.jpeg"
+    ],
+    "name": "Master Bath Tile Design 4",
+    "price": 3400,
+    "type": "bath tile",
+    "description": "some text here some text here some text here some text here some text here some text here",
+    "summary": "some text here some text here some text here",
+    "company": "Master",
+    "category": "tile",
+    "imageCover": "master-bath-tile-10x28 (4).jpg",
+    "size": "10 * 28",
+    "__v": 0
+  },
+  {
+    "images": [
+      "product-887330747186-1588566958323-1.jpeg",
+      "product-556370331632-1588566958342-2.jpeg",
+      "product-528945435854-1588566958345-3.jpeg"
+    ],
+    "name": "Master Bath Tile Design 5",
+    "price": 3400,
+    "type": "bath tile",
+    "description": "some text here some text here some text here some text here some text here some text here",
+    "summary": "some text here some text here some text here",
+    "company": "Master",
+    "category": "tile",
+    "imageCover": "master-bath-tile-10x28 (5).jpg",
+    "size": "10 * 28",
+    "__v": 0
+  }
+]
