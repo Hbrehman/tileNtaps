@@ -21,18 +21,32 @@ const orderRouter = require("./routes/orderRoutes");
 
 if (process.env.NODE_ENV === "production") {
   // For production Environment
-  app.use(
-    cors({
-      credentials: true,
-      origin: "https://tilentaps.com",
-    })
-  );
+
+  var whitelist = ["https://tilentaps.com", "https://admin.tilentaps.com"];
+  var corsOptionsDelegate = function (req, callback) {
+    var corsOptions;
+    if (whitelist.indexOf(req.header("Origin")) !== -1) {
+      corsOptions = { credentials: true, origin: true }; // reflect (enable) the requested origin in the CORS response
+    } else {
+      corsOptions = { origin: false }; // disable CORS for this request
+    }
+    callback(null, corsOptions); // callback expects two parameters: error and options
+  };
+
+  app.use(cors(corsOptionsDelegate));
+
+  // app.use(
+  //   cors({
+  //     credentials: true,
+  //     origin: "https://tilentaps.com",
+  //   })
+  // );
 } else if (process.env.NODE_ENV === "development") {
   // For Development environment
   app.use(
     cors({
       credentials: true,
-      origin: "http://127.0.0.1:8080",
+      origin: "http://127.0.0.1:5501",
     })
   );
 }
