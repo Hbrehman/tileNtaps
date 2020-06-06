@@ -4,15 +4,18 @@ const dotenv = require("dotenv");
 
 const Products = require("./../models/productModel");
 
-dotenv.config({ path: "./config.env" });
+dotenv.config({ path: "../config.env" });
 
 mongoose
-  .connect(process.env.DATABASE, {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true,
-  })
+  .connect(
+    "mongodb+srv://habib:habibawan@clusterfortilentaps-ffur1.mongodb.net/TileNTaps?retryWrites=true&w=majority",
+    {
+      useNewUrlParser: true,
+      useCreateIndex: true,
+      useFindAndModify: false,
+      useUnifiedTopology: true,
+    }
+  )
   .then(() => {
     console.log("DB connection successfull");
   })
