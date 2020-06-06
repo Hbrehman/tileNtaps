@@ -6,7 +6,7 @@
       "product-528945435854-1588566958345-3.jpeg"
     ],
     "name": "Master Bath Tile Design 1",
-    "price": "1350 /meter",
+    "price": 1350,
     "type": "bath tile",
     "description": "some text here some text here some text here some text here some text here some text here",
     "summary": "some text here some text here some text here",
@@ -23,7 +23,7 @@
       "product-528945435854-1588566958345-3.jpeg"
     ],
     "name": "Master Bath Tile Design 2",
-    "price": "1350 /meter",
+    "price": 1350,
     "type": "bath tile",
     "description": "some text here some text here some text here some text here some text here some text here",
     "summary": "some text here some text here some text here",
@@ -40,7 +40,7 @@
       "product-528945435854-1588566958345-3.jpeg"
     ],
     "name": "Master Bath Tile Design 3",
-    "price": "1350 /meter",
+    "price": 1350,
     "type": "bath tile",
     "description": "some text here some text here some text here some text here some text here some text here",
     "summary": "some text here some text here some text here",
@@ -57,7 +57,7 @@
       "product-528945435854-1588566958345-3.jpeg"
     ],
     "name": "Master Bath Tile Design 4",
-    "price": "1350 /meter",
+    "price": 1350,
     "type": "bath tile",
     "description": "some text here some text here some text here some text here some text here some text here",
     "summary": "some text here some text here some text here",
@@ -74,7 +74,7 @@
       "product-528945435854-1588566958345-3.jpeg"
     ],
     "name": "Master Bath Tile Design 5",
-    "price": "1350 /meter",
+    "price": 1350,
     "type": "bath tile",
     "description": "some text here some text here some text here some text here some text here some text here",
     "summary": "some text here some text here some text here",
