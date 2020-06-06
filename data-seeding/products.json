@@ -169,5 +169,91 @@
     "imageCover": "master-bath-10x26 (5).jpg",
     "size": "10 x 26",
     "__v": 0
+  },
+
+  {
+    "images": [
+      "product-887330747186-1588566958323-1.jpeg",
+      "product-556370331632-1588566958342-2.jpeg",
+      "product-528945435854-1588566958345-3.jpeg"
+    ],
+    "name": "Time Ceramic 10x20 Design 1",
+    "price": 850,
+    "type": "bath tile",
+    "description": "some text here some text here some text here some text here some text here some text here",
+    "summary": "some text here some text here some text here",
+    "company": "Time Ceramic",
+    "category": "tile",
+    "imageCover": "timeCeramic-10x20- (1).jpg",
+    "size": "10 x 20",
+    "__v": 0
+  },
+  {
+    "images": [
+      "product-887330747186-1588566958323-1.jpeg",
+      "product-556370331632-1588566958342-2.jpeg",
+      "product-528945435854-1588566958345-3.jpeg"
+    ],
+    "name": "Time Ceramic 10x20 Design 2",
+    "price": 850,
+    "type": "bath tile",
+    "description": "some text here some text here some text here some text here some text here some text here",
+    "summary": "some text here some text here some text here",
+    "company": "Time Ceramic",
+    "category": "tile",
+    "imageCover": "timeCeramic-10x20- (2).jpg",
+    "size": "10 x 20",
+    "__v": 0
+  },
+  {
+    "images": [
+      "product-887330747186-1588566958323-1.jpeg",
+      "product-556370331632-1588566958342-2.jpeg",
+      "product-528945435854-1588566958345-3.jpeg"
+    ],
+    "name": "Time Ceramic 10x20 Design 3",
+    "price": 850,
+    "type": "bath tile",
+    "description": "some text here some text here some text here some text here some text here some text here",
+    "summary": "some text here some text here some text here",
+    "company": "Time Ceramic",
+    "category": "tile",
+    "imageCover": "timeCeramic-10x20- (3).jpg",
+    "size": "10 x 20",
+    "__v": 0
+  },
+  {
+    "images": [
+      "product-887330747186-1588566958323-1.jpeg",
+      "product-556370331632-1588566958342-2.jpeg",
+      "product-528945435854-1588566958345-3.jpeg"
+    ],
+    "name": "Time Ceramic 10x20 Design 4",
+    "price": 850,
+    "type": "bath tile",
+    "description": "some text here some text here some text here some text here some text here some text here",
+    "summary": "some text here some text here some text here",
+    "company": "Time Ceramic",
+    "category": "tile",
+    "imageCover": "timeCeramic-10x20- (4).jpg",
+    "size": "10 x 20",
+    "__v": 0
+  },
+  {
+    "images": [
+      "product-887330747186-1588566958323-1.jpeg",
+      "product-556370331632-1588566958342-2.jpeg",
+      "product-528945435854-1588566958345-3.jpeg"
+    ],
+    "name": "Time Ceramic 10x20 Design 5",
+    "price": 850,
+    "type": "bath tile",
+    "description": "some text here some text here some text here some text here some text here some text here",
+    "summary": "some text here some text here some text here",
+    "company": "Time Ceramic",
+    "category": "tile",
+    "imageCover": "timeCeramic-10x20- (5).jpg",
+    "size": "10 x 20",
+    "__v": 0
   }
 ]
