@@ -7,7 +7,8 @@ if (process.env.NODE_ENV === "production") {
     process.env.DATABASE_PASSWORD
   );
 } else {
-  DB = process.env.DATABASE_LOCAL;
+  DB = process.env.DATABASE;
+  // DB = process.env.DATABASE_LOCAL;
 }
 
 mongoose
