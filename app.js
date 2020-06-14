@@ -34,13 +34,6 @@ if (process.env.NODE_ENV === "production") {
   };
 
   app.use(cors(corsOptionsDelegate));
-
-  // app.use(
-  //   cors({
-  //     credentials: true,
-  //     origin: "https://tilentaps.com",
-  //   })
-  // );
 } else if (process.env.NODE_ENV === "development") {
   // For Development environment
   app.use(

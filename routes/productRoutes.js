@@ -7,8 +7,8 @@ const router = express.Router();
 router
   .route("/")
   .post(
-    authController.protect,
-    authController.restrictTo("admin"),
+    // authController.protect,
+    // authController.restrictTo("admin"),
     productController.uploadProductImages,
     productController.resizeProductImage,
     productController.createProduct
@@ -18,20 +18,20 @@ router
 router
   .route("/:id")
   .patch(
-    authController.protect,
-    authController.restrictTo("admin"),
+    // authController.protect,
+    // authController.restrictTo("admin"),
     productController.uploadProductImages,
     productController.resizeProductImage,
     productController.updateProduct
   )
   .get(
-    authController.protect,
-    authController.restrictTo("admin"),
+    // authController.protect,
+    // authController.restrictTo("admin"),
     productController.getProduct
   )
   .delete(
-    authController.protect,
-    authController.restrictTo("admin"),
+    // authController.protect,
+    // authController.restrictTo("admin"),
     productController.deleteProduct
   );
 
