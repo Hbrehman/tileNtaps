@@ -4,7 +4,12 @@ const sharp = require("sharp");
 const catchAsync = require("./../utils/catchAsync");
 const appError = require("./../utils/appError");
 const Product = require("./../models/productModel");
-
+const AWS = require("aws-sdk");
+AWS.config.update({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: "ap-southeast-1",
+});
 // Multer filter
 const multerFilter = (req, file, cb) => {
   if (file.mimetype.startsWith("image")) {
@@ -40,7 +45,7 @@ exports.uploadProductImages = upload.fields([
 // resize users photo
 
 exports.resizeProductImage = catchAsync(async (req, res, next) => {
-  console.log(req.files);
+  // console.log(req.files);
   if (!req.files.imageCover || !req.files.images) return next();
 
   // cover Image
@@ -48,11 +53,36 @@ exports.resizeProductImage = catchAsync(async (req, res, next) => {
   const randomNumber = parseInt(Math.random() * 1000000000000);
   req.body.imageCover = `product-${randomNumber}-${Date.now()}-cover.jpeg`;
 
-  await sharp(req.files.imageCover[0].buffer)
+  sharp(req.files.imageCover[0].buffer)
     .resize(2000, 1333)
     .toFormat("jpeg")
     .jpeg({ qaulity: 99 })
-    .toFile(`public/img/products/${req.body.imageCover}`);
+    .toBuffer()
+    .then((data) => {
+      let s3bucket = new AWS.S3();
+      let imgFolder = "img";
+      let subFolder = "products";
+      const params = {
+        Bucket: process.env.S3_BUCKET_NAME,
+        ACL: "public-read",
+        Key: `${imgFolder}/${subFolder}/${req.body.imageCover}`,
+        Body: data,
+      };
+
+      s3bucket.putObject(params, function (err, data) {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(
+            `Successfully uploaded data to ${process.env.S3_BUCKET_NAME}/${imgFolder}/${subFolder}/${req.body.imageCover}`
+          );
+        }
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  // .toFile(`public/img/products/${req.body.imageCover}`);
 
   // other images
   req.body.images = [];
@@ -61,11 +91,36 @@ exports.resizeProductImage = catchAsync(async (req, res, next) => {
     req.files.images.map(async (file, i) => {
       const randomNumber = parseInt(Math.random() * 1000000000000);
       const fileName = `product-${randomNumber}-${Date.now()}-${i + 1}.jpeg`;
-      await sharp(file.buffer)
+      sharp(file.buffer)
         .resize(2000, 1333)
         .toFormat("jpeg")
         .jpeg({ qaulity: 99 })
-        .toFile(`public/img/products/${fileName}`);
+        .toBuffer()
+        .then((data) => {
+          let s3bucket = new AWS.S3();
+          let imgFolder = "img";
+          let subFolder = "products";
+          const params = {
+            Bucket: process.env.S3_BUCKET_NAME,
+            ACL: "public-read",
+            Key: `${imgFolder}/${subFolder}/${fileName}`,
+            Body: data,
+          };
+
+          s3bucket.putObject(params, function (err, data) {
+            if (err) {
+              console.log(err);
+            } else {
+              console.log(
+                `Successfully uploaded data to ${process.env.S3_BUCKET_NAME}/${imgFolder}/${subFolder}/${fileName}`
+              );
+            }
+          });
+        })
+        .catch((err) => {
+          console.log(error);
+        });
+      // .toFile(`public/img/products/${fileName}`);
 
       req.body.images.push(fileName);
     })

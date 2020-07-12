@@ -18,9 +18,8 @@ module.exports.getCheckoutSession = catchAsync(async (req, res, next) => {
       allowed_countries: ["PK"],
     },
     payment_method_types: ["card"],
-    success_url: `https://hbrehman.github.io/frontendTileNTaps/products.html`,
-    cancel_url:
-      "https://hbrehman.github.io/frontendTileNTaps/shoppingCart.html",
+    success_url: `https://tilentaps.com`,
+    cancel_url: "https://tilentaps.com/shoppingCart.html",
     customer_email: req.user.email,
     client_reference_id: cartId,
     line_items: lineItems,
