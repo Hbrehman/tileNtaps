@@ -4,14 +4,14 @@ const slugify = require("slugify");
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
-    // required: [true, "Product must have a name"],
+    required: [true, "Product must have a name"],
     unique: true,
     minlength: 5,
     maxlength: 70,
   },
   price: {
     type: Number,
-    // required: [true, "Product must have a price"],
+    required: [true, "Product must have a price"],
     min: 1,
   },
   slug: String,
@@ -43,23 +43,23 @@ const productSchema = new mongoose.Schema({
       "basin",
       "sink",
     ],
-    // required: [true, "Product must have a type"],
+    required: [true, "Product must have a type"],
   },
   description: {
     type: String,
-    // required: [true, "Please provide description for product"],
+    required: [true, "Please provide description for product"],
     minlength: 50,
     maxlength: 255,
   },
   summary: {
     type: String,
-    // required: [true, "Please provide summary for product"],
+    required: [true, "Please provide summary for product"],
     minlength: 25,
     maxlength: 200,
   },
   company: {
     type: String,
-    // required: [true, "Product must have a company"],
+    required: [true, "Product must have a company"],
     minlength: 5,
     maxlength: 50,
   },
@@ -71,10 +71,10 @@ const productSchema = new mongoose.Schema({
   category: {
     type: String,
     enum: ["tile", "taps", "sanitaryWare"],
-    // required: [
-    //   true,
-    //   "A Product must have a category either tile, taps or sanitaryWare",
-    // ],
+    required: [
+      true,
+      "A Product must have a category either tile, taps or sanitaryWare",
+    ],
   },
   imageCover: {
     type: String,
